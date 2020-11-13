@@ -7,15 +7,15 @@ using namespace std;
 
 class AdjacencyList { // Most if this is from Stepik Graphs section!! 
 private:
-    map<int, vector<pair<int, int>>> graph;//Think about what member variables you need to initialize
+    map<int, vector<pair<double, double>>> graph;
     
 public:
-    void insertEdge(int from, int to, int weight);
+    void insertEdge(int from, int to, int weight); // FIXME: Change data types
     bool isEdge(int from, int to);
     int getWeight(int from, int to);
     vector<int> getAdjacent(int vertex);
     void printGraph();
-    void PageRank(int n);//Think about what helper functions you will need in the algorithm
+    void PageRank(int n);
 };
 void AdjacencyList::PageRank(int n) { 
     // prints the PageRank of all pages after p powerIterations in ascending alphabetical order 
