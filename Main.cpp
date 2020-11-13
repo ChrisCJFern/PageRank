@@ -1,12 +1,20 @@
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <map>
+#include <vector>
 using namespace std;
 
-class AdjacencyList {
+class AdjacencyList { // Most if this is from Stepik Graphs section!! 
 private:
-    //Think about what member variables you need to initialize
+    map<int, vector<pair<int, int>>> graph;//Think about what member variables you need to initialize
+    
 public:
+    void insertEdge(int from, int to, int weight);
+    bool isEdge(int from, int to);
+    int getWeight(int from, int to);
+    vector<int> getAdjacent(int vertex);
+    void printGraph();
     void PageRank(int n);//Think about what helper functions you will need in the algorithm
 };
 void AdjacencyList::PageRank(int n) { 
@@ -15,6 +23,52 @@ void AdjacencyList::PageRank(int n) {
     // To accept the input, you can use this method:
 
 } 
+void AdjacencyList::insertEdge(int from, int to, int weight) { // from lecture
+    graph[from].push_back(make_pair(to, weight));
+    if (graph.find(to) == graph.end())
+        graph[to] = {};
+}
+bool AdjacencyList::isEdge(int from, int to) {
+    if (graph.find(from) == graph.end() || graph.find(to) == graph.end()) // Check if vertices exist
+        return false;
+    for (int i = 0; i < graph[from].size(); i++) {
+        if (graph[from].at(i).first == to)
+            return true;
+    }
+    return false;
+}
+int AdjacencyList::getWeight(int from, int to) {
+    if (graph.find(from) == graph.end() || graph.find(to) == graph.end()) // Check if vertices exist
+        return 0;
+    for (int i = 0; i < graph[from].size(); i++) {
+        if (graph[from].at(i).first == to)
+            return graph[from].at(i).second;
+    }
+    return 0;
+}
+vector<int> AdjacencyList::getAdjacent(int vertex) {
+    vector<int> adjacents = {};
+    if (graph.find(vertex) == graph.end()) // does vertex exist?
+        return adjacents;
+    for (int i = 0; i < graph[vertex].size(); i++) {
+        adjacents.push_back(graph[vertex].at(i).first);
+    }
+    return adjacents;
+}
+void AdjacencyList::printGraph() {
+    for (auto it = graph.begin(); it != graph.end(); it++) {
+        cout << it->first;
+        if (it->second.size() != 0)
+            cout << " ";
+        for (int i = 0; i < it->second.size(); i++) {
+            cout << it->second.at(i).first;
+            if (i != it->second.size() - 1) // get rid of whitespace at end
+                cout << " ";
+
+        }
+        cout << endl;
+    }
+}
 
 int main()
 {
