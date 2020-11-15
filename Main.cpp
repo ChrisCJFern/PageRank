@@ -24,7 +24,7 @@ void AdjacencyList::PageRank(int n) {
     // of webpages and rounding rank to two decimal places. This class and method are optional. 
     if (j != 0) {
         vector<double> rVec(j, 1.0 / j);
-        vector<double> real(j, 0.0);
+        vector<double> rankVec(j, 0.0);
         for (auto it = index.begin(); it != index.end(); it++) {
             double sum = 0;
             cout << it->first << " ";
@@ -32,14 +32,16 @@ void AdjacencyList::PageRank(int n) {
             if (graph[it->second].size() != 0)
                 cout << " ";
             for (int i = 0; i < graph[it->second].size(); i++) {
-                sum += rVec.at(index[graph[it->second].at(i)]) * (1.0 / getOutDegree(graph[it->second].at(i)));
+                sum += (rVec.at(index[graph[it->second].at(i)]) * (1.0 / getOutDegree(graph[it->second].at(i))));
+                double one = rVec.at(index[graph[it->second].at(i)]);
+                double two = (1.0 / getOutDegree(graph[it->second].at(i)));
                 //cout << rVec.at(index[graph[it->second].at(i)]) << " " << (1.0 / getOutDegree(graph[it->second].at(i))) << endl;
                 //cout << sum << endl;
                 //cout << graph[it->second].at(i);
                 if (i != graph[it->second].size() - 1) // get rid of whitespace at end
                     cout << " ";
             }
-            real.at(it->second) = sum;
+            //real.at(it->second) = sum;
             cout << sum;
             cout << endl;
         }
@@ -51,9 +53,9 @@ void AdjacencyList::insertEdge(string from, string to) { // from lecture
         index[from] = j++;
     if (index.find(to) == index.end())
         index[to] = j++;
-    graph[index[from]].push_back(to);
-    if (graph.find(index[to]) == graph.end())
-        graph[index[to]] = {};
+    graph[index[to]].push_back(from);
+    if (graph.find(index[from]) == graph.end())
+        graph[index[from]] = {};
 }
 
 bool AdjacencyList::isEdge(string from, string to) {
@@ -66,10 +68,15 @@ bool AdjacencyList::isEdge(string from, string to) {
     return false;
 }
 int AdjacencyList::getOutDegree(string from) {
-    if (graph.find(index[from]) == graph.end()) // Check if vertices exist
-        return 0;
-    else
-        return graph[index[from]].size();
+    vector<int> outDegree(j, 0);
+    for (auto it = index.begin(); it != index.end(); it++) {
+        for (int i = 0; i < graph[it->second].size(); i++) {
+            outDegree.at(index[graph[it->second].at(i)])++;
+        }
+    }
+    for (int i = 0; i < outDegree.size(); i++) {
+        cout << outDegree.at(i) << " ";
+    }
     return 0;
 }
 vector<string> AdjacencyList::getAdjacent(string vertex) {
@@ -78,6 +85,7 @@ vector<string> AdjacencyList::getAdjacent(string vertex) {
         return adjacents;
     for (int i = 0; i < graph[index[vertex]].size(); i++) {
         adjacents.push_back(graph[index[vertex]].at(i));
+        
     }
     return adjacents;
 }
@@ -111,9 +119,9 @@ int main()
         // Do Something
     }
     cout << endl;
-    pageRank.printGraph();
+    //pageRank.printGraph();
     //pageRank.PageRank(4);
-
+    pageRank.getOutDegree("lol");
     //Create a graph object
     //Created_Graph.PageRank(power_iterations);
 }
