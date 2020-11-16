@@ -16,7 +16,7 @@ private:
 public:
 	void insertEdge(string from, string to);
 	vector<int> getOutDegreeVec();
-	void printGraph();
+	//void printGraph(); FOR DEBUGGING
 	void PageRank(int n);
 };
 void AdjacencyList::PageRank(int n) {
